@@ -519,16 +519,16 @@
 
         let response;
         if (token) {
-          response = await fetch('http://localhost:5001/api/bookings', {
+          response = await fetch('https://hotel-reservation-zeje.onrender.com/api/bookings', {
             headers: { 'Authorization': `Bearer ${token}` }
           });
           if (response.status === 401 || response.status === 404) {
             // Fallback to public all-bookings endpoint
-            response = await fetch('http://localhost:5001/api/bookings');
+            response = await fetch('https://hotel-reservation-zeje.onrender.com/api/bookings');
           }
         } else {
           // No token: show all bookings so user can still see recent entries
-          response = await fetch('http://localhost:5001/api/bookings');
+          response = await fetch('https://hotel-reservation-zeje.onrender.com/api/bookings');
         }
 
         // Do not block on 401; by here we've already tried fallback
@@ -557,7 +557,7 @@
         // fall back to fetching all bookings and filter by current user (email or id) client-side.
         if (Array.isArray(bookings) && bookings.length === 0 && currentUser) {
           try {
-            const allResp = await fetch('http://localhost:5001/api/bookings');
+            const allResp = await fetch('https://hotel-reservation-zeje.onrender.com/api/bookings');
             if (allResp.ok && (allResp.headers.get('content-type') || '').includes('application/json')) {
               const allBookings = await allResp.json();
               bookings = allBookings.filter(b => (
@@ -651,7 +651,7 @@
 
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:5001/api/bookings/${currentBookingId}`, {
+        const response = await fetch(`https://hotel-reservation-zeje.onrender.com/api/bookings/${currentBookingId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`

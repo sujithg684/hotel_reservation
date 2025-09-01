@@ -160,7 +160,7 @@ if (bookingForm) {
 // Function to send booking data to backend
 async function submitBookingToBackend(bookingData) {
     try {
-        const response = await fetch('http://localhost:5001/api/book', {
+        const response = await fetch('https://hotel-reservation-zeje.onrender.com/api/book', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
