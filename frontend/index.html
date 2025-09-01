@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Park Hotel - Book Your Table</title>
+    <link rel="icon" href="C:\Users\sujit\Pictures\Screenshots\Screenshot 2025-07-30 201128.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/user-dropdown.css">
+    <style>
+        /* Modern Luxury Booking Page */
+        body {
+            font-family: 'Lato', Arial, sans-serif;
+            background: linear-gradient(135deg, #f8f6f2 0%, #fffbe9 50%, #f0f8ff 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Enhanced Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(183,28,28,0.1);
+            transition: all 0.3s ease;
+            padding: 15px 0;
+        }
+
+        header.scrolled {
+            background: rgba(255,255,255,0.98);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #b71c1c;
+            margin-left: 30px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover, nav a.active {
+            color: #b71c1c;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #b71c1c;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after, nav a.active::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, 
+                rgba(0,0,0,0.4) 0%, 
+                rgba(0,0,0,0.2) 50%, 
+                rgba(0,0,0,0.5) 100%),
+                url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+            margin-top: 80px;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                rgba(183,28,28,0.2) 0%, 
+                rgba(255,112,67,0.1) 50%, 
+                rgba(183,28,28,0.2) 100%);
+            backdrop-filter: blur(1px);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #fff;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-content h3 {
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: #ffeaea;
+            text-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Booking Section */
+        .booking-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 30px;
+            margin: -50px auto 80px auto;
+            max-width: 1000px;
+            padding: 60px 40px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.1);
+            backdrop-filter: blur(15px);
+            position: relative;
+            z-index: 10;
+        }
+
+        .booking-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #333;
+            position: relative;
+        }
+
+        .booking-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #b71c1c, #ff7043);
+            border-radius: 2px;
+        }
+
+        .booking-form {
+            display: grid;
+            gap: 30px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 18px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            background: #fff;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #b71c1c;
+            box-shadow: 0 0 0 3px rgba(183,28,28,0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: 'Lato', Arial, sans-serif;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(183,28,28,0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(183,28,28,0.1);
+        }
+
+        .checkbox-row input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #b71c1c;
+        }
+
+        .checkbox-row label {
+            font-size: 1.1rem;
+            color: #333;
+            margin: 0;
+        }
+
+        .captcha-box {
+            background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+            color: #666;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .captcha-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(183,28,28,0.1), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #b71c1c 0%, #ff7043 100%);
+            color: #fff;
+            border: none;
+            padding: 20px 60px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(183,28,28,0.4);
+        }
+
+        .form-success {
+            background: linear-gradient(135deg, #4caf50, #66bb6a);
+            color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            font-weight: 600;
+            margin-top: 20px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* CTA Banner */
+        .cta-banner {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin: 80px 0;
+        }
+
+        .cta-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1600&q=80') center/cover;
+            opacity: 0.1;
+        }
+
+        .cta-banner h3 {
+            position: relative;
+            z-index: 2;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 40px;
+            text-shadow: 0 4px 16px rgba(0,0,0,0.3);
+        }
+
+        .cta-btns {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 18px 40px;
+            border: 2px solid #fff;
+            background: transparent;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-btn.join {
+            background: #fff;
+            color: #b71c1c;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        /* Enhanced Footer */
+        footer {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #fff;
+            padding: 80px 0 30px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1600&q=80') center/cover;
+            opacity: 0.05;
+        }
+
+        .footer-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+        }
+
+        .footer-brand-logos {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-brand-logos span {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 25px;
+            padding: 15px 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(15px);
+        }
+
+        .footer-brand-logos span:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+        }
+
+        .footer-brand-logos img {
+            height: 45px;
+            border-radius: 10px;
+        }
+
+        .footer-links, .footer-contact, .footer-newsletter {
+            text-align: center;
+        }
+
+        .footer-links h3, .footer-contact h3, .footer-newsletter h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #fff;
+        }
+
+        .footer-links ul, .footer-social ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links ul li, .footer-social ul li {
+            margin-bottom: 15px;
+        }
+
+        .footer-links ul li a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            padding: 8px 0;
+        }
+
+        .footer-links ul li a:hover {
+            color: #b71c1c;
+            transform: translateX(8px);
+        }
+
+        .footer-contact p {
+            color: #ccc;
+            font-size: 1.1rem;
+            margin-bottom: 18px;
+            line-height: 1.6;
+        }
+
+        .footer-social ul {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .footer-social ul li a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #b71c1c, #ff7043);
+            color: #fff;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(183,28,28,0.3);
+        }
+
+        .footer-social ul li a:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 12px 35px rgba(183,28,28,0.4);
+        }
+
+        .footer-newsletter {
+            background: rgba(255,255,255,0.05);
+            border-radius: 25px;
+            padding: 40px;
+            backdrop-filter: blur(15px);
+        }
+
+        .footer-newsletter label {
+            display: block;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .footer-newsletter input[type="email"] {
+            width: 100%;
+            padding: 18px 25px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            margin-bottom: 20px;
+            backdrop-filter: blur(15px);
+        }
+
+        .footer-newsletter input[type="email"]::placeholder {
+            color: #ccc;
+        }
+
+        .footer-newsletter .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .footer-newsletter button {
+            background: linear-gradient(135deg, #b71c1c, #ff7043);
+            color: #fff;
+            border: none;
+            padding: 18px 35px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .footer-newsletter button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(183,28,28,0.4);
+        }
+
+        /* Page Transition Animation */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #b71c1c;
+            z-index: 9999;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .page-transition.active {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-content h3 {
+                font-size: 1.4rem;
+            }
+            
+            .booking-section {
+                margin: -30px 20px 60px 20px;
+                padding: 40px 20px;
+            }
+            
+            .booking-section h2 {
+                font-size: 2.2rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .cta-banner h3 {
+                font-size: 2rem;
+            }
+            
+            .cta-btns {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .footer-brand-logos {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .spinner.show {
+            display: flex;
+        }
+
+        .spinner-content {
+            background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+            padding: 50px;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.2);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .spinner-icon {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #f0f0f0;
+            border-top: 4px solid #b71c1c;
+            border-right: 4px solid #d32f2f;
+            border-radius: 50%;
+            animation: spin 1.2s linear infinite;
+            margin: 0 auto 25px;
+            box-shadow: 0 4px 20px rgba(183,28,28,0.3);
+        }
+
+        .spinner-content h3 {
+            color: #333;
+            font-size: 1.3rem;
+            margin: 0;
+            font-weight: 600;
+            font-family: 'Lato', Arial, sans-serif;
+        }
+
+        .spinner-content p {
+            color: #666;
+            margin: 10px 0 0 0;
+            font-size: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        /* Professional Luxury Footer Styles */
+        .luxury-footer {
+            position: relative;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            color: #fff;
+            margin-top: 100px;
+            overflow: hidden;
+        }
+
+        .footer-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1600&q=80') center/cover;
+            opacity: 0.1;
+        }
+
+        .footer-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(26,26,26,0.95) 0%, rgba(45,45,45,0.9) 50%, rgba(26,26,26,0.95) 100%);
+        }
+
+        .footer-main {
+            position: relative;
+            z-index: 2;
+            padding: 80px 0 40px 0;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        /* Brand Section */
+        .footer-brand-section {
+            grid-column: 1;
+        }
+
+        .footer-logo h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tagline {
+            font-size: 1rem;
+            color: #b71c1c;
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .footer-description p {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+
+        .footer-certifications {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .certification-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .cert-icon {
+            font-size: 1.1rem;
+        }
+
+        .certification-badge span:last-child {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        /* Quick Links Section */
+        .footer-links-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .footer-links-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, #b71c1c, #ff7043);
+        }
+
+        .footer-links-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .footer-links-column h4 {
+            color: #b71c1c;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-links-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links-column ul li a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            padding: 2px 0;
+        }
+
+        .footer-links-column ul li a:hover {
+            color: #b71c1c;
+            transform: translateX(5px);
+        }
+
+        /* Contact Section */
+        .footer-contact-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .footer-contact-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, #b71c1c, #ff7043);
+        }
+
+        .contact-info-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(183,28,28,0.3);
+            transform: translateY(-2px);
+        }
+
+        .contact-icon {
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, #b71c1c, #ff7043);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .contact-details h4 {
+            color: #b71c1c;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .contact-details p {
+            color: #ccc;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        /* Newsletter Section */
+        .footer-newsletter-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .footer-newsletter-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, #b71c1c, #ff7043);
+        }
+
+        .footer-newsletter-section p {
+            color: #ccc;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .newsletter-input-group {
+            display: flex;
+            background: rgba(255,255,255,0.1);
+            border-radius: 25px;
+            border: 1px solid rgba(255,255,255,0.2);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-input-group:focus-within {
+            border-color: #b71c1c;
+            box-shadow: 0 0 0 3px rgba(183,28,28,0.2);
+        }
+
+        .newsletter-input-group input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 15px 20px;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        .newsletter-input-group input::placeholder {
+            color: #aaa;
+        }
+
+        .newsletter-input-group button {
+            background: linear-gradient(135deg, #b71c1c, #ff7043);
+            color: #fff;
+            border: none;
+            padding: 15px 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .newsletter-input-group button:hover {
+            background: linear-gradient(135deg, #ff7043, #b71c1c);
+            transform: translateX(3px);
+        }
+
+        .arrow {
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .newsletter-input-group button:hover .arrow {
+            transform: translateX(3px);
+        }
+
+        .newsletter-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .newsletter-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #b71c1c;
+        }
+
+        .newsletter-checkbox label {
+            color: #ccc;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        /* Footer Bottom */
+        .footer-bottom {
+            position: relative;
+            z-index: 2;
+            background: rgba(0,0,0,0.3);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 30px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-bottom-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .social-media h4 {
+            color: #b71c1c;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .social-link:hover {
+            background: linear-gradient(135deg, #b71c1c, #ff7043);
+            transform: translateY(-3px);
+            border-color: transparent;
+        }
+
+        .social-icon {
+            font-size: 1.2rem;
+        }
+
+        .footer-legal {
+            text-align: right;
+        }
+
+        .legal-links {
+            margin-bottom: 10px;
+        }
+
+        .legal-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: color 0.3s ease;
+        }
+
+        .legal-links a:hover {
+            color: #b71c1c;
+        }
+
+        .separator {
+            color: #666;
+            margin: 0 8px;
+        }
+
+        .copyright p {
+            color: #aaa;
+            font-size: 0.8rem;
+            margin: 0;
+        }
+
+        /* Responsive Design for Footer */
+        @media (max-width: 1200px) {
+            .footer-container {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .footer-links-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .footer-bottom-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-legal {
+                text-align: center;
+            }
+            
+            .luxury-footer {
+                margin-top: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Transition Overlay -->
+    <div class="page-transition" id="pageTransition"></div>
+    
+    <!-- Loading Spinner -->
+    <div class="spinner" id="spinner">
+        <div class="spinner-content">
+            <div class="spinner-icon"></div>
+            <h3>Processing Your Booking</h3>
+            <p>Please wait while we confirm your reservation...</p>
+        </div>
+    </div>
+
+    <header>
+        <div class="logo">The Park Hotel</div>
+        <nav>
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="index.html" class="active">Book a Table</a></li>
+                <li><a href="rooms.html">Rooms</a></li>
+                <li><a href="dining.html">Dining</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Reserve Your Perfect Table</h1>
+            <h3>Experience culinary excellence in an atmosphere of luxury</h3>
+        </div>
+    </section>
+
+    <section class="booking-section">
+        <h2>Book Your Table</h2>
+        <form class="booking-form" id="bookingForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <select id="title" required>
+                        <option value="">Select Title</option>
+                        <option value="Mr.">Mr.</option>
+                        <option value="Ms.">Ms.</option>
+                        <option value="Mrs.">Mrs.</option>
+                        <option value="Dr.">Dr.</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" required placeholder="Enter your first name">
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" required placeholder="Enter your last name">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required placeholder="Enter your email address">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" required placeholder="Enter your phone number" pattern="[0-9]{10,15}">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="restaurant">Restaurant</label>
+                    <select id="restaurant" required>
+                        <option value="">Select Restaurant</option>
+                        <option value="The Park Restaurant">The Park Restaurant</option>
+                        <option value="Zone Restaurant">Zone Restaurant</option>
+                        <option value="Sky Lounge">Sky Lounge</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="time">Time</label>
+                    <input type="time" id="time" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="guests">Number of Guests</label>
+                    <input type="number" id="guests" min="1" max="20" required placeholder="Number of guests">
+                </div>
+                <div class="form-group" style="grid-column: span 2;">
+                    <label for="comments">Special Requests</label>
+                    <textarea id="comments" placeholder="Any special requests, dietary restrictions, or preferences..."></textarea>
+                </div>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="privacy" required>
+                <label for="privacy">I agree to the privacy policy and terms of service</label>
+            </div>
+            <div class="captcha-box">
+                <span>🛡️ I am not a robot [CAPTCHA Placeholder]</span>
+            </div>
+            <button type="submit" class="submit-btn">Reserve Table</button>
+        </form>
+        <div id="form-success" class="form-success" style="display:none;">
+            <h3>🎉 Booking Confirmed!</h3>
+            <p>Thank you for choosing The Park Hotel. We've a confirmed table with your booking details.</p>
+        </div>
+    </section>
+
+    <section class="cta-banner">
+        <h3>Join Our Preferred Membership</h3>
+        <div class="cta-btns">
+            <button class="cta-btn learn">Learn More</button>
+            <button class="cta-btn join">Join Now</button>
+        </div>
+    </section>
+
+    
+    <div class="cookie-banner" id="cookieBanner">
+        <span>We use cookies to ensure you get the best experience. <a href="#" style="color:var(--primary);text-decoration:underline;">Learn more</a></span>
+        <button onclick="acceptCookies()">Accept</button>
+    </div>
+<footer class="luxury-footer">
+        <div class="footer-background">
+            <div class="footer-overlay"></div>
+        </div>
+        
+        <div class="footer-main">
+            <div class="footer-container">
+                <!-- Brand Section -->
+                <div class="footer-brand-section">
+                    <div class="footer-logo">
+                        <h2>The Park Hotel</h2>
+                        <p class="tagline">Where Luxury Meets Comfort</p>
+                    </div>
+                    <div class="footer-description">
+                        <p>Experience world-class hospitality in the heart of the city. Our commitment to excellence ensures every stay is memorable.</p>
+                    </div>
+                    <div class="footer-certifications">
+                        <div class="certification-badge">
+                            <span class="cert-icon">⭐</span>
+                            <span>5-Star Rated</span>
+                        </div>
+                        <div class="certification-badge">
+                            <span class="cert-icon">🏆</span>
+                            <span>Award Winning</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Links Section -->
+                <div class="footer-links-section">
+                    <h3>Quick Navigation</h3>
+                    <div class="footer-links-grid">
+                        <div class="footer-links-column">
+                            <h4>Accommodations</h4>
+                            <ul>
+                                <li><a href="#deluxe">Deluxe Rooms</a></li>
+                                <li><a href="#executive">Executive Suites</a></li>
+                                <li><a href="#presidential">Presidential Suite</a></li>
+                                <li><a href="#twin">Twin Rooms</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-column">
+                            <h4>Services</h4>
+                            <ul>
+                                <li><a href="#spa">Spa & Wellness</a></li>
+                                <li><a href="#dining">Fine Dining</a></li>
+                                <li><a href="#events">Event Spaces</a></li>
+                                <li><a href="#concierge">Concierge</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-links-column">
+                            <h4>Support</h4>
+                            <ul>
+                                <li><a href="contact.html">Contact Us</a></li>
+                                <li><a href="#faq">FAQ</a></li>
+                                <li><a href="#support">24/7 Support</a></li>
+                                <li><a href="#feedback">Feedback</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Section -->
+                <div class="footer-contact-section">
+                    <h3>Get In Touch</h3>
+                    <div class="contact-info-grid">
+                        <div class="contact-item">
+                            <div class="contact-icon">📍</div>
+                            <div class="contact-details">
+                                <h4>Location</h4>
+                                <p>123 Luxury Avenue<br>Downtown District<br>City 12345, Country</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">📞</div>
+                            <div class="contact-details">
+                                <h4>Phone</h4>
+                                <p>+91 12345 67890<br>+91 98765 43210</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">✉️</div>
+                            <div class="contact-details">
+                                <h4>Email</h4>
+                                <p>info@theparkhotel.com<br>reservations@theparkhotel.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Newsletter Section -->
+                <div class="footer-newsletter-section">
+                    <h3>Stay Updated</h3>
+                    <p>Subscribe to our newsletter for exclusive offers and updates</p>
+                    <form class="newsletter-form">
+                        <div class="newsletter-input-group">
+                            <input type="email" placeholder="Enter your email address" required>
+                            <button type="submit">
+                                <span>Subscribe</span>
+                                <span class="arrow">→</span>
+                            </button>
+                        </div>
+                        <div class="newsletter-checkbox">
+                            <input type="checkbox" id="newsletter-consent" required>
+                            <label for="newsletter-consent">I agree to receive promotional emails and updates</label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Media & Bottom Bar -->
+        <div class="footer-bottom">
+            <div class="footer-bottom-container">
+                <div class="social-media">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-link facebook" aria-label="Facebook">
+                            <span class="social-icon">📘</span>
+                        </a>
+                        <a href="#" class="social-link instagram" aria-label="Instagram">
+                            <span class="social-icon">📷</span>
+                        </a>
+                        <a href="#" class="social-link twitter" aria-label="Twitter">
+                            <span class="social-icon">🐦</span>
+                        </a>
+                        <a href="#" class="social-link linkedin" aria-label="LinkedIn">
+                            <span class="social-icon">💼</span>
+                        </a>
+                        <a href="#" class="social-link youtube" aria-label="YouTube">
+                            <span class="social-icon">📺</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-legal">
+                    <div class="legal-links">
+                        <a href="#privacy">Privacy Policy</a>
+                        <span class="separator">•</span>
+                        <a href="#terms">Terms of Service</a>
+                        <span class="separator">•</span>
+                        <a href="#cookies">Cookie Policy</a>
+                        <span class="separator">•</span>
+                        <a href="#accessibility">Accessibility</a>
+                    </div>
+                    <div class="copyright">
+                        <p>&copy; 2024 The Park Hotel. All rights reserved. | Luxury Hospitality Excellence</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Enhanced page transitions
+        function navigateWithTransition(href) {
+            const transition = document.getElementById('pageTransition');
+            transition.classList.add('active');
+            
+            setTimeout(() => {
+                window.location.href = href;
+            }, 500);
+        }
+
+        // Add click event listeners to all navigation links
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.href && this.href !== window.location.href) {
+                    e.preventDefault();
+                    navigateWithTransition(this.href);
+                }
+            });
+        });
+
+        // Form submission with enhanced UX
+        let isSubmitting = false; // Flag to prevent multiple submissions
+        
+        document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Prevent multiple submissions
+            if (isSubmitting) {
+                console.log('Form submission already in progress...');
+                return;
+            }
+            
+            isSubmitting = true;
+            
+            // Show loading spinner
+            document.getElementById('spinner').classList.add('show');
+            
+            try {
+                // Check authentication first
+                if (!checkAuthBeforeSubmit()) {
+                    isSubmitting = false; // Reset flag if auth is required
+                    document.getElementById('spinner').classList.remove('show');
+                    return;
+                }
+
+                // Get form data
+                const formData = {
+                    title: document.getElementById('title').value,
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    restaurant: document.getElementById('restaurant').value,
+                    date: document.getElementById('date').value,
+                    time: document.getElementById('time').value,
+                    guests: parseInt(document.getElementById('guests').value),
+                    comments: document.getElementById('comments').value || ''
+                };
+
+                // Get token
+                const token = localStorage.getItem('token');
+
+                // Submit to backend
+                const response = await fetch('http://localhost:5001/api/book', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                // Hide spinner first
+                document.getElementById('spinner').classList.remove('show');
+                
+                // Check if response is JSON
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error('Invalid response format. Please try again.');
+                }
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    // Show success message
+                    document.getElementById('form-success').style.display = 'block';
+                    document.getElementById('form-success').innerHTML = `
+                        <h3>🎉 Booking Confirmed!</h3>
+                        <p>Thank you for choosing The Park Hotel. Your booking ID is: <strong>${result._id}</strong></p>
+                        <p>We've sent a confirmation email with your booking details.</p>
+                        <div style="margin-top: 20px; text-align: center;">
+                            <a href="view-bookings.html" class="view-bookings-btn" style="
+                                display: inline-block;
+                                background: linear-gradient(135deg, #b71c1c 0%, #ff7043 100%);
+                                color: white;
+                                padding: 12px 25px;
+                                text-decoration: none;
+                                border-radius: 25px;
+                                font-weight: 600;
+                                transition: all 0.3s ease;
+                                box-shadow: 0 4px 15px rgba(183,28,28,0.3);
+                            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(183,28,28,0.4)'" 
+                               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(183,28,28,0.3)'">
+                                📋 View My Bookings
+                            </a>
+                        </div>
+                    `;
+                    
+                    // Scroll to success message
+                    document.getElementById('form-success').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                    
+                    // Reset form
+                    this.reset();
+                } else {
+                    throw new Error(result.error || 'Booking failed. Please try again.');
+                }
+            } catch (error) {
+                console.error('Booking error:', error);
+                
+                // Show error message in a more user-friendly way
+                document.getElementById('form-success').style.display = 'block';
+                document.getElementById('form-success').innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #d32f2f;">
+                        <h3>❌ Booking Failed</h3>
+                        <p>${error.message}</p>
+                        <div style="margin-top: 20px;">
+                            <button onclick="document.getElementById('form-success').style.display='none'" style="
+                                background: linear-gradient(135deg, #b71c1c 0%, #ff7043 100%);
+                                color: white;
+                                border: none;
+                                padding: 12px 25px;
+                                border-radius: 25px;
+                                font-weight: 600;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                            ">Try Again</button>
+                        </div>
+                    </div>
+                `;
+                
+                // Scroll to error message
+                document.getElementById('form-success').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            } finally {
+                // Reset submission flag
+                isSubmitting = false;
+            }
+        });
+
+        // Enhanced form validation
+        const formInputs = document.querySelectorAll('.booking-form input, .booking-form select, .booking-form textarea');
+        formInputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.hasAttribute('required') && !this.value) {
+                    this.style.borderColor = '#ff4444';
+                } else {
+                    this.style.borderColor = '#e0e0e0';
+                }
+            });
+            
+            input.addEventListener('input', function() {
+                if (this.style.borderColor === 'rgb(255, 68, 68)') {
+                    this.style.borderColor = '#e0e0e0';
+                }
+            });
+        });
+
+        // Check authentication before form submission
+        function checkAuthBeforeSubmit() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+            
+            if (!token || !user) {
+                // Show login required message
+                document.getElementById('form-success').style.display = 'block';
+                document.getElementById('form-success').innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <h3>🔐 Login Required</h3>
+                        <p>You need to be logged in to book a table.</p>
+                        <div style="margin-top: 20px;">
+                            <a href="login.html" style="
+                                display: inline-block;
+                                background: linear-gradient(135deg, #b71c1c 0%, #ff7043 100%);
+                                color: white;
+                                padding: 12px 25px;
+                                text-decoration: none;
+                                border-radius: 25px;
+                                font-weight: 600;
+                                transition: all 0.3s ease;
+                                box-shadow: 0 4px 15px rgba(183,28,28,0.3);
+                            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(183,28,28,0.4)'" 
+                               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(183,28,28,0.3)'">
+                                Login Now
+                            </a>
+                        </div>
+                    </div>
+                `;
+                
+                // Scroll to message
+                document.getElementById('form-success').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Date input minimum value
+        const dateInput = document.getElementById('date');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+    </script>
+    
+    <!-- Authentication Script -->
+    <script src="js/auth.js"></script>
+</body>
+</html>

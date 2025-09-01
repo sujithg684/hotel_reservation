@@ -1,0 +1,26 @@
+{
+    "name": "hotel-booking-backend",
+    "version": "1.0.0",
+    "description": "A Node.js + Express.js + MongoDB backend for a hotel/restaurant table booking system.",
+    "main": "server.js",
+    "scripts": {
+        "start": "set PORT=5001 && node server.js",
+        "dev": "set PORT=5001 && nodemon server.js"
+        
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "dotenv": "^16.6.1",
+        "express": "^4.21.2",
+        "mongodb": "^6.18.0",
+        "mongoose": "^7.8.7",
+        "bcryptjs": "^3.0.2",
+        "jsonwebtoken": "^9.0.2"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.10"
+    }
+}

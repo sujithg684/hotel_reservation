@@ -1,0 +1,1 @@
+i want to display the details entered in index.html .... in mongo db cluster

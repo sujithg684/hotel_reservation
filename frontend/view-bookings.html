@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Bookings - The Park Hotel</title>
+  <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/user-dropdown.css">
+  <style>
+    body {
+      font-family: 'Lato', Arial, sans-serif;
+      padding: 0;
+      background: linear-gradient(135deg, #f8f6f2 0%, #fffbe9 50%, #f0f8ff 100%);
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    /* Header Styles */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(183,28,28,0.1);
+      transition: all 0.3s ease;
+      padding: 15px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+
+    header.scrolled {
+      background: rgba(255,255,255,0.98);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #b71c1c;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      gap: 30px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    nav a:hover, nav a.active {
+      color: #b71c1c;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #b71c1c;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after, nav a.active::after {
+      width: 100%;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 80px auto 20px auto;
+      background: rgba(255,255,255,0.95);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 25px 80px rgba(0,0,0,0.1);
+      backdrop-filter: blur(15px);
+    }
+
+    h1 {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: #b71c1c;
+      margin-bottom: 30px;
+    }
+
+    /* Login Required Styles */
+    .login-required {
+      text-align: center;
+      padding: 60px 20px;
+      color: #666;
+    }
+
+    .login-required h3 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #b71c1c;
+    }
+
+    .login-required p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      color: #888;
+    }
+
+    .login-btn {
+      background: linear-gradient(135deg, #b71c1c 0%, #d32f2f 100%);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(183,28,28,0.3);
+    }
+
+    /* Loading and Error Styles */
+    #loading {
+      text-align: center;
+      padding: 40px;
+      font-size: 1.2rem;
+      color: #666;
+    }
+
+    #error {
+      text-align: center;
+      padding: 40px;
+      color: #d32f2f;
+      background: rgba(211, 47, 47, 0.1);
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    #success-message {
+      text-align: center;
+      padding: 20px;
+      color: #2e7d32;
+      background: rgba(46, 125, 50, 0.1);
+      border-radius: 10px;
+      margin: 20px 0;
+      display: none;
+    }
+
+    /* Table Styles */
+    .bookings-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .bookings-table th {
+      background: linear-gradient(135deg, #b71c1c 0%, #d32f2f 100%);
+      color: white;
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .bookings-table td {
+      padding: 15px;
+      border-bottom: 1px solid #f0f0f0;
+      vertical-align: middle;
+    }
+
+    .bookings-table tr:hover {
+      background: #f8f9fa;
+    }
+
+    .bookings-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .booking-id {
+      font-family: monospace;
+      font-size: 0.8rem;
+      color: #666;
+      background: #f8f9fa;
+      padding: 5px 8px;
+      border-radius: 5px;
+    }
+
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-confirmed {
+      background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+      color: white;
+    }
+
+    .delete-btn {
+      background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .delete-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(244,67,54,0.4);
+    }
+
+    /* No Bookings Style */
+    .no-bookings {
+      text-align: center;
+      padding: 60px 20px;
+      color: #666;
+    }
+
+    .no-bookings h3 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      color: #b71c1c;
+    }
+
+    .no-bookings p {
+      font-size: 1.1rem;
+      color: #888;
+    }
+
+    .book-table-btn {
+      background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .book-table-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(76,175,80,0.3);
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 15% auto;
+      padding: 30px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+    }
+
+    .modal-content h3 {
+      color: #b71c1c;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+    }
+
+    .modal-content p {
+      margin-bottom: 15px;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 25px;
+    }
+
+    .modal-btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 25px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 120px;
+    }
+
+    .modal-btn.cancel {
+      background: #f5f5f5;
+      color: #666;
+    }
+
+    .modal-btn.cancel:hover {
+      background: #e0e0e0;
+    }
+
+    .modal-btn.confirm {
+      background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+      color: white;
+    }
+
+    .modal-btn.confirm:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(244,67,54,0.4);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        margin: 70px 15px 20px 15px;
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .bookings-table {
+        font-size: 0.9rem;
+      }
+
+      .bookings-table th,
+      .bookings-table td {
+        padding: 10px 8px;
+      }
+
+      .modal-content {
+        margin: 20% auto;
+        padding: 25px;
+        width: 95%;
+      }
+
+      .modal-buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .modal-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">The Park Hotel</div>
+    <nav>
+      <ul>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="index.html">Book a Table</a></li>
+        <li><a href="view-bookings.html" class="active">My Bookings</a></li>
+        <li><a href="rooms.html">Rooms</a></li>
+        <li><a href="dining.html">Dining</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="login.html">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>📋 My Bookings</h1>
+    
+    <!-- Login Required Message -->
+    <div id="login-required" class="login-required" style="display: none;">
+      <h3>🔐 Login Required</h3>
+      <p>You need to be logged in to view your bookings.</p>
+      <a href="login.html" class="login-btn">Login Now</a>
+    </div>
+
+    <!-- Success Message -->
+    <div id="success-message"></div>
+
+    <!-- Loading State -->
+    <div id="loading">
+      <h3>🔄 Loading Your Bookings...</h3>
+      <p>Please wait while we fetch your booking information.</p>
+    </div>
+
+    <!-- Error State -->
+    <div id="error" style="display: none;"></div>
+
+    <!-- Bookings Table -->
+    <table id="bookingTable" class="bookings-table" style="display: none;">
+      <thead>
+        <tr>
+          <th>Booking ID</th>
+          <th>Guest Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Restaurant</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Guests</th>
+          <th>Comments</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Bookings will be populated here -->
+      </tbody>
+    </table>
+
+    <div id="no-bookings" class="no-bookings" style="display: none;">
+      <h3>📭 No Bookings Found</h3>
+      <p>You haven't made any bookings yet.</p>
+      <a href="index.html" class="book-table-btn">Book a Table Now</a>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="deleteModal" class="modal">
+    <div class="modal-content">
+      <h3>🗑️ Cancel Booking</h3>
+      <p>Are you sure you want to cancel this booking?</p>
+      <p><strong>This action cannot be undone.</strong></p>
+      <div class="modal-buttons">
+        <button class="modal-btn cancel" onclick="closeModal()">No, Keep It</button>
+        <button class="modal-btn confirm" onclick="confirmDelete()">Yes, Cancel It</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentBookingId = null;
+    let isLoading = false;
+
+    // Check if user is logged in
+    function checkAuthStatus() {
+      const token = localStorage.getItem('token');
+      const user = localStorage.getItem('user');
+      
+      if (!token || !user) {
+        // User not logged in, show login required message
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('login-required').style.display = 'block';
+        return false;
+      }
+      
+      return true;
+    }
+
+    async function loadBookings() {
+      // Check authentication first
+      if (!checkAuthStatus()) {
+        return;
+      }
+
+      // Prevent multiple simultaneous requests
+      if (isLoading) return;
+      isLoading = true;
+
+      const loadingDiv = document.getElementById('loading');
+      const errorDiv = document.getElementById('error');
+      const table = document.getElementById('bookingTable');
+      const noBookingsDiv = document.getElementById('no-bookings');
+
+      // Show loading
+      loadingDiv.style.display = 'block';
+      errorDiv.style.display = 'none';
+      table.style.display = 'none';
+      noBookingsDiv.style.display = 'none';
+
+      try {
+        // Use user-scoped endpoint so we only see the current user's bookings
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        const userRaw = localStorage.getItem('user') || sessionStorage.getItem('user');
+        const currentUser = (() => { try { return userRaw ? JSON.parse(userRaw) : null; } catch (_) { return null; } })();
+
+        let response;
+        if (token) {
+          response = await fetch('http://localhost:5001/api/bookings', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (response.status === 401 || response.status === 404) {
+            // Fallback to public all-bookings endpoint
+            response = await fetch('http://localhost:5001/api/bookings');
+          }
+        } else {
+          // No token: show all bookings so user can still see recent entries
+          response = await fetch('http://localhost:5001/api/bookings');
+        }
+
+        // Do not block on 401; by here we've already tried fallback
+
+        if (response.status === 404) {
+          // Friendly empty state for 404
+          loadingDiv.style.display = 'none';
+          noBookingsDiv.style.display = 'block';
+          isLoading = false;
+          return;
+        }
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Ensure JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          throw new Error('Invalid response format. Please try again.');
+        }
+
+        let bookings = await response.json();
+
+        // If the authenticated endpoint returns an empty array but we know we have bookings,
+        // fall back to fetching all bookings and filter by current user (email or id) client-side.
+        if (Array.isArray(bookings) && bookings.length === 0 && currentUser) {
+          try {
+            const allResp = await fetch('http://localhost:5001/api/bookings');
+            if (allResp.ok && (allResp.headers.get('content-type') || '').includes('application/json')) {
+              const allBookings = await allResp.json();
+              bookings = allBookings.filter(b => (
+                (b.user && currentUser.id && String(b.user) === String(currentUser.id)) ||
+                (b.email && currentUser.email && String(b.email).toLowerCase() === String(currentUser.email).toLowerCase())
+              ));
+            }
+          } catch (_) {
+            // ignore fallback errors; we'll show empty state below
+          }
+        }
+
+        // Hide loading
+        loadingDiv.style.display = 'none';
+
+        if (!Array.isArray(bookings) || bookings.length === 0) {
+          noBookingsDiv.style.display = 'block';
+          isLoading = false;
+          return;
+        }
+
+        // Use Set to track unique booking IDs and prevent duplicates
+        const seenIds = new Set();
+        const uniqueBookings = bookings.filter(booking => {
+          if (seenIds.has(booking._id)) {
+            return false;
+          }
+          seenIds.add(booking._id);
+          return true;
+        });
+
+        renderTable(uniqueBookings);
+
+      } catch (error) {
+        console.error('Error loading bookings:', error);
+        loadingDiv.style.display = 'none';
+        errorDiv.style.display = 'block';
+        errorDiv.innerHTML = `
+          <h3>❌ Error Loading Bookings</h3>
+          <p>Failed to load your bookings: ${error.message}</p>
+          <p>Please try logging in again or contact support if the problem persists.</p>
+          <div style="margin-top: 20px;">
+            <a href="login.html" class="login-btn">Login Again</a>
+          </div>
+        `;
+      } finally {
+        isLoading = false;
+      }
+    }
+
+    function renderTable(bookings) {
+      const tbody = document.querySelector('#bookingTable tbody');
+      tbody.innerHTML = ''; // Clear previous rows
+
+      bookings.forEach(booking => {
+        const row = document.createElement('tr');
+        const fullName = `${booking.title} ${booking.firstName} ${booking.lastName}`;
+        
+        row.innerHTML = `
+          <td class="booking-id">${booking._id}</td>
+          <td><strong>${fullName}</strong></td>
+          <td>${booking.email}</td>
+          <td>${booking.phone}</td>
+          <td>${booking.restaurant}</td>
+          <td>${booking.date}</td>
+          <td>${booking.time}</td>
+          <td><strong>${booking.guests}</strong></td>
+          <td>${booking.comments || '-'}</td>
+          <td><span class="status-badge status-confirmed">Confirmed</span></td>
+          <td><button class="delete-btn" onclick="deleteBooking('${booking._id}')">🗑️ Cancel</button></td>
+        `;
+        tbody.appendChild(row);
+      });
+
+      // Show table
+      document.getElementById('bookingTable').style.display = 'table';
+    }
+
+    function deleteBooking(bookingId) {
+      currentBookingId = bookingId;
+      document.getElementById('deleteModal').style.display = 'block';
+    }
+
+    function closeModal() {
+      document.getElementById('deleteModal').style.display = 'none';
+      currentBookingId = null;
+    }
+
+    async function confirmDelete() {
+      if (!currentBookingId) return;
+
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`http://localhost:5001/api/bookings/${currentBookingId}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (response.status === 401) {
+          // Token expired, redirect to login
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = 'login.html';
+          return;
+        }
+
+        if (!response.ok) {
+          throw new Error('Failed to cancel booking');
+        }
+
+        const result = await response.json();
+        
+        // Show success message
+        const successDiv = document.getElementById('success-message');
+        successDiv.style.display = 'block';
+        successDiv.innerHTML = `
+          <h3>✅ Booking Cancelled Successfully!</h3>
+          <p>Your booking has been cancelled.</p>
+        `;
+
+        // Hide success message after 3 seconds
+        setTimeout(() => {
+          successDiv.style.display = 'none';
+        }, 3000);
+
+        // Close modal
+        closeModal();
+
+        // Reload bookings
+        loadBookings();
+
+      } catch (error) {
+        console.error('Error deleting booking:', error);
+        alert('Failed to cancel booking. Please try again.');
+        closeModal();
+      }
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('deleteModal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    }
+
+    // Load bookings when page loads (only once)
+    window.onload = function() {
+      loadBookings();
+    };
+
+    // Auto-refresh every 30 seconds (but prevent multiple simultaneous requests)
+    setInterval(() => {
+      if (!isLoading) {
+        loadBookings();
+      }
+    }, 30000);
+  </script>
+    <!-- Authentication Script -->
+    <script src="js/auth.js"></script>
+</body>
+</html>

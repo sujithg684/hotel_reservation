@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Test - The Park Hotel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #b71c1c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        .test-button:hover {
+            background: #d32f2f;
+        }
+        .result {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #28a745;
+        }
+        .error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+        .success {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+        .info {
+            border-left-color: #17a2b8;
+            background: #d1ecf1;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔐 Authentication System Test</h1>
+    <p>This page tests the login and signup functionality of The Park Hotel booking system.</p>
+
+    <div class="test-section">
+        <h2>📡 Backend Server Test</h2>
+        <button class="test-button" onclick="testBackend()">Test Backend Connection</button>
+        <div id="backend-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>📝 Signup Test</h2>
+        <button class="test-button" onclick="testSignup()">Test User Signup</button>
+        <div id="signup-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>🔑 Login Test</h2>
+        <button class="test-button" onclick="testLogin()">Test User Login</button>
+        <div id="login-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>👤 Current User Status</h2>
+        <button class="test-button" onclick="checkUserStatus()">Check Current User</button>
+        <div id="user-status"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>🧹 Cleanup</h2>
+        <button class="test-button" onclick="clearStorage()">Clear Local Storage</button>
+        <button class="test-button" onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        let testUser = {
+            firstName: 'Test',
+            lastName: 'User',
+            email: `testuser${Date.now()}@example.com`,
+            password: '123456'
+        };
+
+        function showResult(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="result ${type}">${message}</div>`;
+        }
+
+        async function testBackend() {
+            try {
+                const response = await fetch('http://localhost:5001/api/test');
+                const data = await response.json();
+                showResult('backend-result', 
+                    `<strong>✅ Backend is working!</strong><br>
+                     Message: ${data.message}<br>
+                     Timestamp: ${data.timestamp}<br>
+                     Email Configured: ${data.emailConfigured}`, 'success');
+            } catch (error) {
+                showResult('backend-result', 
+                    `<strong>❌ Backend connection failed!</strong><br>
+                     Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testSignup() {
+            try {
+                const response = await fetch('http://localhost:5001/api/auth/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(testUser)
+                });
+
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error('Server error: Invalid response format');
+                }
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showResult('signup-result', 
+                        `<strong>✅ Signup successful!</strong><br>
+                         User ID: ${data.user.id}<br>
+                         Name: ${data.user.firstName} ${data.user.lastName}<br>
+                         Email: ${data.user.email}<br>
+                         Token: ${data.token.substring(0, 20)}...`, 'success');
+                    
+                    // Store the token for login test
+                    localStorage.setItem('testToken', data.token);
+                    localStorage.setItem('testUser', JSON.stringify(data.user));
+                } else {
+                    showResult('signup-result', 
+                        `<strong>❌ Signup failed!</strong><br>
+                         Error: ${data.error}`, 'error');
+                }
+            } catch (error) {
+                showResult('signup-result', 
+                    `<strong>❌ Signup error!</strong><br>
+                     Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testLogin() {
+            try {
+                const response = await fetch('http://localhost:5001/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: testUser.email,
+                        password: testUser.password
+                    })
+                });
+
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error('Server error: Invalid response format');
+                }
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showResult('login-result', 
+                        `<strong>✅ Login successful!</strong><br>
+                         User ID: ${data.user.id}<br>
+                         Name: ${data.user.firstName} ${data.user.lastName}<br>
+                         Email: ${data.user.email}<br>
+                         Token: ${data.token.substring(0, 20)}...`, 'success');
+                    
+                    // Store the token
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                } else {
+                    showResult('login-result', 
+                        `<strong>❌ Login failed!</strong><br>
+                         Error: ${data.error}`, 'error');
+                }
+            } catch (error) {
+                showResult('login-result', 
+                    `<strong>❌ Login error!</strong><br>
+                     Error: ${error.message}`, 'error');
+            }
+        }
+
+        function checkUserStatus() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || 'null');
+            
+            if (token && user) {
+                showResult('user-status', 
+                    `<strong>✅ User is logged in!</strong><br>
+                     Name: ${user.firstName} ${user.lastName}<br>
+                     Email: ${user.email}<br>
+                     Token: ${token.substring(0, 20)}...`, 'success');
+            } else {
+                showResult('user-status', 
+                    `<strong>❌ No user logged in</strong><br>
+                     Token: ${token ? 'Present' : 'Missing'}<br>
+                     User: ${user ? 'Present' : 'Missing'}`, 'info');
+            }
+        }
+
+        function clearStorage() {
+            localStorage.clear();
+            showResult('user-status', '<strong>🧹 Local storage cleared!</strong>', 'info');
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            showResult('user-status', '<strong>🚪 User logged out!</strong>', 'info');
+        }
+
+        // Auto-test backend on page load
+        window.addEventListener('load', testBackend);
+    </script>
+</body>
+</html>
+

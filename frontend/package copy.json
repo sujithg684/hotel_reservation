@@ -1,0 +1,21 @@
+{
+  "name": "hotel-booking-website",
+  "version": "1.0.0",
+  "description": "A modern hotel table booking website with Node.js backend",
+  "main": "index.html",
+  "scripts": {
+    "start": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "backend": "cd BACKEND && npm run dev",
+    "frontend": "live-server --port=3000 --open=/index.html",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "install-all": "npm install && cd BACKEND && npm install"
+  },
+  "keywords": ["hotel", "booking", "restaurant", "luxury"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "live-server": "^1.2.2"
+  }
+}
+
